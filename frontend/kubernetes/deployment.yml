@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      imagePullSecrets:
+        - name: gitlab-registry-auth
+      containers:
+      - name: frontend
+        image: registry.gitlab.com/transcendence-group/frontend:main-09f10759
+        ports:
+        - containerPort: 5173
+        volumeMounts:
+        - name: ssl-cert
+          mountPath: "/etc/nginx/ssl"
+          readOnly: true
+      volumes:
+      - name: ssl-cert
+        secret:
+          secretName: frontend-ssl-cert

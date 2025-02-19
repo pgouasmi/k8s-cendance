@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai
+  labels:
+    app: ai
+spec:
+  replicas: 1  # Pour la haute disponibilité
+  selector:
+    matchLabels:
+      app: ai
+  template:
+    metadata:
+      labels:
+        app: ai
+    spec:
+      # nodeSelector:
+      #   ingress-ready: "true"
+      imagePullSecrets:
+        - name: gitlab-registry-auth
+      containers:
+      - name: ai
+        image: registry.gitlab.com/transcendence-group/ia:main-4f1e3d15
+        env:
+        - name: AI_HASH_SECRET
+          value: "099037764c75c0c511ce8c3eaa1b02c8998d495b5c6fb1f796df1cd07647f91c"
+        - name: AI_SERVICE_TOKEN
+          value: "f2c2f3560b814ff56472a2cdebfe005bcb3ee47df31bd0d41367308d683f935a"
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: ssl-cert
+          mountPath: "/etc/ssl"
+          readOnly: true
+      volumes:
+      - name: ssl-cert
+        secret:
+          secretName: frontend-ssl-cert
+          items:              # Cette partie est nouvelle
+              - key: tls.crt   # Le nom du fichier dans le secret
+                path: tls.crt # Le nom que nous voulons dans le conteneur
+              - key: tls.key
+                path: tls.key

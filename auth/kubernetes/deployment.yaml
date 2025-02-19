@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+  labels:
+    app: auth
+spec:
+  replicas: 1  # Pour la haute disponibilité
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      # nodeSelector:
+      #   ingress-ready: "true"
+      imagePullSecrets:
+        - name: gitlab-registry-auth
+      containers:
+      - name: auth
+        image: registry.gitlab.com/transcendence-group/auth:main-613e1a5a
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: POSTGRES_DB
+        - name: DATABASE_URL
+          value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)"
+        - name: JWT_SECRET_KEY
+          value: "QlDJQcJgrTbEE72V1yCS469uguODkpK/cii6OLKKBa0="
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: ssl-cert
+          mountPath: "/etc/ssl"
+          readOnly: true
+      volumes:
+      - name: ssl-cert
+        secret:
+          secretName: frontend-ssl-cert
+          items:              # Cette partie est nouvelle
+              - key: tls.crt   # Le nom du fichier dans le secret
+                path: tls.crt # Le nom que nous voulons dans le conteneur
+              - key: tls.key
+                path: tls.key

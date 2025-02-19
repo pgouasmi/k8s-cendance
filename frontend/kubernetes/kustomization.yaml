@@ -1,0 +1,11 @@
+# kubernetes/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - configmap.yml
+  - deployment.yml
+  - service.yml
+  - ingress.yml
+  - secrets/gitlab-registry-secret.yaml
+  - secrets/ssl-secret.generated.yaml  # Notez qu'on utilise le fichier généré

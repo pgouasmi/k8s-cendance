@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game
+  labels:
+    app: game
+spec:
+  replicas: 1  # Pour la haute disponibilité
+  selector:
+    matchLabels:
+      app: game
+  template:
+    metadata:
+      labels:
+        app: game
+    spec:
+      imagePullSecrets:
+        - name: gitlab-registry-auth
+      containers:
+      - name: game
+        image: registry.gitlab.com/transcendence-group/game:main-8f5e2676
+        env:
+        - name: JWT_SECRET_KEY
+          value: "QlDJQcJgrTbEE72V1yCS469uguODkpK/cii6OLKKBa0="
+        - name: GAME_SERVICE_TOKEN
+          value: "be1cfe93f3bc0f0f534442328c6191c986e011e18c9fe34d7952c2a50f99fb8b"
+        - name: AI_SERVICE_TOKEN
+          value: "f2c2f3560b814ff56472a2cdebfe005bcb3ee47df31bd0d41367308d683f935a"
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: ssl-cert
+          mountPath: "/etc/nginx/ssl"
+          readOnly: true
+      volumes:
+      - name: ssl-cert
+        secret:
+          secretName: frontend-ssl-cert
+          items:              # Cette partie est nouvelle
+              - key: tls.crt   # Le nom du fichier dans le secret
+                path: tls.crt # Le nom que nous voulons dans le conteneur
+              - key: tls.key
+                path: tls.key

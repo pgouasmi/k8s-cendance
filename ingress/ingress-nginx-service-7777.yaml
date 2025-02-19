@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-nginx-controller-7777
+  namespace: ingress-nginx
+  annotations:
+    # Cette annotation permet de préserver l'IP source, utile pour le logging et la sécurité
+    service.beta.kubernetes.io/preserve-client-ip: "true"
+spec:
+  type: NodePort
+  ports:
+  - name: https-7777
+    port: 7777          # Le port que nos services verront dans le cluster
+    targetPort: https   # Le port sur lequel l'Ingress Controller écoute
+    nodePort: 30777     # Le port exposé sur le node Kubernetes
+    protocol: TCP
+  selector:
+    # Ces sélecteurs doivent correspondre aux labels de l'Ingress Controller
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/component: controller
