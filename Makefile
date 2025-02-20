@@ -47,7 +47,7 @@ help:
 	@echo ""
 	@echo "${YELLOW}Access URL:${NC} https://localhost:7777 (works best with Google Chrome)"
 	@echo ""
-	
+
 
 install-deps:
 	@echo "${YELLOW}Installing dependencies...${NC}"
@@ -91,6 +91,7 @@ setup-ingress:
 	@if ! ./kubectl get namespaces 2>/dev/null | grep -q "ingress-nginx"; then \
 		echo "${YELLOW}Creating ingress-nginx namespace${NC}"; \
 		./kubectl create namespace ingress-nginx; \
+		sleep 2; \
 		echo "${YELLOW}Applying nginx ingress controller...${NC}"; \
 		./kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml; \
 	else \
@@ -150,7 +151,7 @@ wait-for-services:
 display-url:
 	@echo "${YELLOW}Use this URL to access the frontend:${NC}"
 	@echo "${GREEN}https://localhost:7777${NC}"
-	@echo "${YELLOW}⚠️Works best on Google Chrome$\n{NC}"
+	@echo "${YELLOW}⚠️Works best on Google Chrome\n${NC}"
 
 
 down:
