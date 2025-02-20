@@ -5,7 +5,7 @@ metadata:
   labels:
     app: matchmaking
 spec:
-  replicas: 1  # Pour la haute disponibilité
+  replicas: 1 
   selector:
     matchLabels:
       app: matchmaking
@@ -38,8 +38,8 @@ spec:
       - name: ssl-cert
         secret:
           secretName: frontend-ssl-cert
-          items:              # Cette partie est nouvelle
-              - key: tls.crt   # Le nom du fichier dans le secret
-                path: nginx.crt # Le nom que nous voulons dans le conteneur
+          items:             
+              - key: tls.crt  
+                path: nginx.crt 
               - key: tls.key
                 path: nginx.key

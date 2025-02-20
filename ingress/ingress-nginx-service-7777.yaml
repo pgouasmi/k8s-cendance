@@ -4,7 +4,6 @@ metadata:
   name: ingress-nginx-controller-7777
   namespace: ingress-nginx
   annotations:
-    # Cette annotation permet de préserver l'IP source, utile pour le logging et la sécurité
     service.beta.kubernetes.io/preserve-client-ip: "true"
 spec:
   # ingressClassName: nginx
@@ -16,7 +15,7 @@ spec:
     nodePort: 30777
     protocol: TCP
   selector:
-    # Ces sélecteurs doivent correspondre aux labels de l'Ingress Controller
+    #labels de l'Ingress Controller
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/component: controller
