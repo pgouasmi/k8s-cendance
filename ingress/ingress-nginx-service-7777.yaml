@@ -7,12 +7,13 @@ metadata:
     # Cette annotation permet de préserver l'IP source, utile pour le logging et la sécurité
     service.beta.kubernetes.io/preserve-client-ip: "true"
 spec:
+  # ingressClassName: nginx
   type: NodePort
   ports:
   - name: https-7777
-    port: 7777          # Le port que nos services verront dans le cluster
-    targetPort: https   # Le port sur lequel l'Ingress Controller écoute
-    nodePort: 30777     # Le port exposé sur le node Kubernetes
+    port: 7777
+    targetPort: 443
+    nodePort: 30777
     protocol: TCP
   selector:
     # Ces sélecteurs doivent correspondre aux labels de l'Ingress Controller

@@ -11,11 +11,12 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "8m"
     nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
 
-    nginx.ingress.kubernetes.io/websocket-services: "game"  # Le nom du service qui gère les WebSockets
+    nginx.ingress.kubernetes.io/websocket-services: "game"
     nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
     # nginx.ingress.kubernetes.io/connection-proxy-header: "upgrade"
 
 spec:
+  ingressClassName: nginx
   tls:
   - secretName: frontend-ssl-cert
   rules:

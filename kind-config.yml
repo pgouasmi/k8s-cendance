@@ -13,6 +13,11 @@ nodes:
       hostPort: 80
     - containerPort: 443
       hostPort: 443
-    - containerPort: 7777
+    - containerPort: 30777
       hostPort: 7777
       protocol: TCP
+networking:
+  apiServerAddress: "127.0.0.1"
+  disableDefaultCNI: false
+  podSubnet: "10.244.0.0/16"
+  serviceSubnet: "10.96.0.0/16"
