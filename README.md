@@ -7,6 +7,7 @@ A reimagined Pong game deployed on Kubernetes, featuring online multiplayer and 
 ## Project Overview
 
 This project serves as an introduction to Kubernetes by deploying a modernized version my 42School's team and I made of the classic Pong game. The application is fully containerized and deployed on a local Kubernetes cluster using Kind (Kubernetes in Docker).
+All the images are hosted on my GitLab registry.
 
 ### Features
 
@@ -15,7 +16,7 @@ This project serves as an introduction to Kubernetes by deploying a modernized v
 
 ![Description](./images/menu.png)
 
-# ⚠️ Login/Authentication has been disabled for this version
+### ⚠️ Login/Authentication has been disabled for this version
 
 ## Requirements
 
